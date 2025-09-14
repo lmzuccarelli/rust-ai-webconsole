@@ -11,7 +11,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #333333; 
+            background-color: #2a2a2a; 
             color: #FFFFFF; 
             margin: 0;
             padding: 15px;
@@ -225,7 +225,7 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-                <button type="submit" id="submit-login" hx-post="/login" >Login</button>
+                <button type="submit" id="submit-login" hx-post="/webconsole/login" >Login</button>
             </form>
         </div>
 
@@ -244,13 +244,13 @@
                     <label for="password">Confirm</label>
                     <input type="password" id="password-b" name="password-b" required>
                 </div>
-                <button type="submit" id="submit-register" hx-post="/register" >Register</button>
+                <button type="submit" id="submit-register" hx-post="/webconsole/register" >Register</button>
             </form>
         </div>
 
         <div class="form-container" id="inputForm" style="display: none;">
             <h2>AI Form Details</h2>
-            <form id="formdata" hx-post="/formdata" hx-ext="json-enc">
+            <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc">
                 <input type="hidden" id="key" name="key" value="">
                 <div class="form-group">
                     <label for="title">Title</label>
@@ -267,7 +267,7 @@
                 <div style="display: flex; flex-direction: rows;">
                     <button type="submit">Submit</button>
                     <span style="margin-right: 10px"></span>
-                    <button id="button-deploy" hx-post="/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
+                    <button id="button-deploy" hx-post="/webconsole/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
                 </div>
             </form>
         </div>
@@ -275,7 +275,7 @@
         <div id="searchForm" class="search-wrapper" style="display: none">
             <div class="form-container">
                 <h2>AI Search</h2>
-                <form id="search" hx-post="/search" hx-ext="json-enc" hx-target="#results">
+                <form id="search" hx-post="/webconsole/search" hx-ext="json-enc" hx-target="#results">
                     <div class="form-group">
                         <label for="select">Database</label>
                         <select id="select" name="select">

@@ -4,7 +4,7 @@
 	"port": "1337",
 	"certs_dir": "./certs",
 	"cert_mode": "file",
-	"log_level": "debug",
+	"log_level": "info",
 	"db_path": "./database",
 	"deploy_dir": "/home/lzuccarelli/Projects/ai-workloads"
 }

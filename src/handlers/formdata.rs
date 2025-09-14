@@ -121,7 +121,7 @@ pub fn render_results_html(rows: HashMap<String, FormData>) -> String {
             <td>{}</td>
             <td>{}</td>
             <td>{}</td>
-            <td><i class=\"fa fa-trash-o\" hx-post=\"/delete/{}\" hx-trigger=\"click\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/formdata/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
+            <td><i class=\"fa fa-trash-o\" hx-post=\"/webconsole/delete/{}\" hx-trigger=\"click\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
         </tr>",
             key, fd.file, fd.title, fd.prompt,key,key
         );
@@ -151,7 +151,7 @@ pub fn render_form_html(key: String, fd: FormData) -> String {
                 <div style="display: flex; flex-direction: rows;">
                     <button type="submit">Submit</button>
                     <span style="margin-right: 10px"></span>
-                    <button id="button-deploy" hx-post="/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
+                    <button id="button-deploy" hx-post="/webconsole/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
                 </div>
             </form>
     "##,
