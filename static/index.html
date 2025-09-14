@@ -1,0 +1,440 @@
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Webconsole</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333333; 
+            color: #FFFFFF; 
+            margin: 0;
+            padding: 15px;
+            justify-content: left;
+            align-items: center;
+        }
+
+        .header {
+            background-color: #1a1a1a; 
+            width: 100%;
+            height: 50px;
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid #5a5a5a; 
+            margin-bottom: 30px; 
+            display: flex;
+            justify-content: left;
+            align-items: center;
+            border-radius: 8px;
+        }
+
+        .header .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #FFFFFF; 
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logo img {
+            height: 40px; 
+            margin-right: 10px;
+            filter: drop-shadow(0 0 5px rgba(225, 225, 225 0.7)); 
+        }
+
+        .container {
+            background-color: #222222;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            margin-bottom: 20px;
+        }
+
+        .response-container {
+            background-color: #222222;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 550px;
+            height:180px;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background-color: #222222;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 750px;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            background-color: #222222;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            color: #FFFFFF; 
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select,textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            background-color: #444444; 
+            color: #FFFFFF;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        input[type="date"],
+        input[type="text"],
+        input[type="password"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555555;
+            border-radius: 4px;
+            background-color: #444444; 
+            color: #FFFFFF;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        input[type="date"]:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #FFFFFF; 
+            box-shadow: 0 0 0 3px rgba(225, 225, 225, 0.3);
+        }
+
+        button {
+            background-color: #121212; 
+            color: #FFFFFF;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 20px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1a1a1a; 
+        }
+
+        .div-wrapper {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .div-sidebar {
+            padding: 15px px;
+            width: 60px;
+            font-size: 40px;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .span-space {
+            margin-bottom: 30px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #3a3a3a;
+        }
+
+        th,td {
+            text-align: left;
+            padding: 10px;
+        }
+
+        table tr:not(thead):hover {
+            background-color: #131313;
+        }
+
+    </style>
+</head>
+<body onload="checkSession();return false;" hx-ext="head-support">
+    <input type="hidden" id="session-id" value="">
+    <div class="header">
+        <a href="#" class="logo">
+            &nbsp;&nbsp;AI WebConsole
+        </a>
+    </div>
+
+    <div class="div-wrapper">
+        <div class="div-sidebar">
+            <span class="span-space" onclick="showForm('searchForm');return false;"><i class="fa fa-home" ></i></span>
+            <span class="span-space" onclick="login();return false;"><i class="fa fa-sign-in" ></i></span>
+            <span class="span-space" onclick="register();return false;"><i class="fa fa-external-link" ></i></span>
+            <span class="span-space" onclick="showForm('searchForm');return false;"><i class="fa fa-search" ></i></span>
+            <span class="span-space" onclick="showForm('inputForm');return false;"><i class="fa fa-cogs" ></i></span>
+            <span class="span-space" onclick="logout();return false;"><i class="fa fa-sign-out" ></i></span>
+        </div>
+
+        <div class="container" id="loginForm">
+            <h2>Login</h2>
+            <form>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" id="submit-login" hx-post="/login" >Login</button>
+            </form>
+        </div>
+
+        <div class="container" id="registerForm" style="display: none;">
+            <h2>Register</h2>
+            <form>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username-a" name="username-a" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password-a" name="password-a" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Confirm</label>
+                    <input type="password" id="password-b" name="password-b" required>
+                </div>
+                <button type="submit" id="submit-register" hx-post="/register" >Register</button>
+            </form>
+        </div>
+
+        <div class="form-container" id="inputForm" style="display: none;">
+            <h2>AI Form Details</h2>
+            <form id="formdata" hx-post="/formdata" hx-ext="json-enc">
+                <input type="hidden" id="key" name="key" value="">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <input type="text" id="file" name="file" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="prompt">Prompt</label>
+                    <textarea id="prompt" name="prompt" rows="8" required></textarea>
+                </div>
+                <div style="display: flex; flex-direction: rows;">
+                    <button type="submit">Submit</button>
+                    <span style="margin-right: 10px"></span>
+                    <button id="button-deploy" hx-post="/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="searchForm" class="search-wrapper" style="display: none">
+            <div class="form-container">
+                <h2>AI Search</h2>
+                <form id="search" hx-post="/search" hx-ext="json-enc" hx-target="#results">
+                    <div class="form-group">
+                        <label for="select">Database</label>
+                        <select id="select" name="select">
+                            <option id="kv-store" name="kv-store">kv-store</option>
+                            <!-- <option id="kv" name="kv">vector-db</option> -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="from">Key From</label>
+                        <input type="date" id="from" name="from">
+                    </div>
+                    <div class="form-group">
+                        <label for="to">Key To</label>
+                        <input type="date" id="to" name="to">
+                    </div>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div style="margin-top: 30px; margin-bottom: 30px"></div>
+            <div class="table-container">
+                <h2>Results</h2>
+                <table id="search-table" cellpadding="0" cellspacing="0" border="0" style="display: none">
+                    <thead>
+                        <th>Key</th>
+                        <th>File</th>
+                        <th>Title</th>
+                        <th>Prompt</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody id="results"></tbody>
+                </table> 
+            </div>
+        </div>
+        
+        <div class="response-container" id="responseForm" style="display: none;">
+            <h2>Response</h2>
+            <div style="display: flex; flex-direction: row; width: 100%;">
+                <i class="fa fa-check-circle-o" style="color: green; font-size: 40px; width: 20%"></i>
+                <div id="response" style="box-sizing: border-box; width: 80%;text-align: left; padding: 8px; font-size:20px"></div>
+            </div>
+        </div>
+
+        <div class="response-container" id="errorForm" style="display: none;">
+            <h2>Error</h2>
+            <div style="display: flex; flex-direction: row; width: 100%;">
+                <i class="fa fa-times-circle-o" style="color: red; font-size: 40px; width: 20%"></i>
+                <div id="error" style="box-sizing: border-box; width: 80%; text-align: left; padding: 8px; font-size:20px">&nbsp;</div>
+            </div>
+        </div>
+
+        <div></div>
+    </div>
+
+    <script>
+
+        document.body.addEventListener('htmx:afterRequest', event => {
+            if (event.detail.successful) {
+                clearAll(); 
+                switch(event.srcElement.id) {
+                case "icon-formdata":
+                    document.getElementById('inputForm').style.display = 'block';
+                    break;
+                case "search":
+                    document.getElementById('searchForm').style.display = 'flex';
+                    document.getElementById('search-table').style.display = 'block';
+                    break;
+                case "formdata": 
+                    document.getElementById('responseForm').style.display = 'block';
+                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
+                    break;
+                case "submit-register": 
+                    document.getElementById('responseForm').style.display = 'block';
+                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
+                    break;
+                case "submit-login": 
+                    document.getElementById('searchForm').style.display = 'flex';
+                    document.getElementById('session-id').value = '12345678';
+
+                    break;
+                case "submit-register": 
+                    document.getElementById('responseForm').style.display = 'block';
+                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
+                    break;
+                case "button-deploy": 
+                    document.getElementById('responseForm').style.display = 'block';
+                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
+                    break;
+                } 
+            } else {
+                showError(event.detail.xhr.responseText);
+            }
+        });
+
+
+        function login() {
+            if (checkSession()) {
+                clearAll();
+                document.getElementById('responseForm').style.display = 'block';
+                document.getElementById('response').innerHTML = "A session is already open (logout first)";
+                return false;
+            }
+        }
+
+        function register() {
+            if (checkSession()) {
+                clearAll();
+                document.getElementById('responseForm').style.display = 'block';
+                document.getElementById('response').innerHTML = "A session is already open (logout first)";
+                return false;
+            }
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById("session-id").value == "";
+        }
+
+        function logout() {
+            clearAll();
+            document.getElementById('responseForm').style.display = 'block';
+            document.getElementById("session-id").value = "";
+            document.getElementById('response').innerHTML = "Logged out successfully";
+        }
+
+        function checkSession() {
+            let sessionId = document.getElementById('session-id');
+            if (sessionId.value === "") {
+                return false;
+            }
+            document.getElementById('searchForm').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'none';
+            return true;
+        }
+
+        function showError(value) {
+            clearAll();
+            document.getElementById('errorForm').style.display = 'block';
+            document.getElementById('error').innerHTML = value;
+        }
+
+        function clearAll() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('searchForm').style.display = 'none';
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('responseForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('errorForm').style.display = 'none';
+            document.getElementById('search-table').style.display = 'none';
+        }
+
+        
+        function showForm(name) {
+            let result = checkSession();
+            clearAll();
+            if (result) {
+                document.getElementById(name).style.display = 'block';
+            } else {
+                document.getElementById('loginForm').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
+
+  
