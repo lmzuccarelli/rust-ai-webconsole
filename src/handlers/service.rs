@@ -27,9 +27,17 @@ fn evaluate_login_params(data: Bytes) -> Result<(String, String), Box<dyn std::e
 
 fn evaluate_formdata_params(data: Bytes) -> Result<FormData, Box<dyn std::error::Error>> {
     let mut fd: FormData = serde_json::from_slice(&data)?;
-    if fd.key.is_none() {
-        let now = Local::now();
-        fd.key = Some(now.format("%Y%m%d%H%M%S").to_string());
+    match fd.key.clone() {
+        Some(key) => {
+            if key == "" {
+                let now = Local::now();
+                fd.key = Some(now.format("%Y%m%d%H%M%S").to_string());
+            }
+        }
+        None => {
+            let now = Local::now();
+            fd.key = Some(now.format("%Y%m%d%H%M%S").to_string());
+        }
     }
     Ok(fd)
 }
@@ -191,7 +199,7 @@ pub async fn ai_service(req: Request<Incoming>) -> Result<Response<Full<Bytes>>,
                 let res = evaluate_formdata_params(data.clone());
                 match res {
                     Ok(fd) => {
-                        let result = deploy_formdata(fd.file, data);
+                        let result = deploy_formdata(fd.category, fd.file, data);
                         match result {
                             Ok(res) => {
                                 *response.status_mut() = StatusCode::OK;

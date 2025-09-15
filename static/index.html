@@ -252,9 +252,20 @@
             <h2>AI Form Details</h2>
             <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc">
                 <input type="hidden" id="key" name="key" value="">
+                <input type="hidden" id="credentials" name="credentials" value="">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option id="hobby" name="hobby">hobby</option>
+                        <option id="finance" name="finance">finance</option>
+                        <option id="projects" name="projects">projects</option>
+                        <option id="programming" name="programming">programming</option>
+                        <option id="sw-architecture" name="sw-architecture">sw-architecture</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="file">File</label>
@@ -353,7 +364,7 @@
                 case "submit-login": 
                     document.getElementById('searchForm').style.display = 'flex';
                     document.getElementById('session-id').value = '12345678';
-
+                    document.getElementById('credentials').value = document.getElementById('username').value;
                     break;
                 case "submit-register": 
                     document.getElementById('responseForm').style.display = 'block';
