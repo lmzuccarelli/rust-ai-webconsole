@@ -146,7 +146,7 @@ pub fn render_form_html(key: String, fd: FormData) -> String {
     let html = format!(
         r##"
             <h2>AI Form Details</h2>
-            <form id="formdata" hx-post="/formdata" hx-ext="json-enc">
+            <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc">
                 <input type="hidden" id="key" name="key" value="{}">
                 <input type="hidden" id="credentials" name="credentials" value="{}">
                 <div class="form-group">
