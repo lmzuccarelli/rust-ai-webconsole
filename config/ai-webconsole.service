@@ -1,0 +1,7 @@
+[Unit]
+Description=ai-webconsole-service
+
+[Service]
+ExecStart=/home/lzuccarelli/services/ai-webconsole-service --config /home/lzuccarelli/services/ai-webconsole-config.json
+Restart=Always
+PIDFile=/tmp/ai-webconsole_service_pid

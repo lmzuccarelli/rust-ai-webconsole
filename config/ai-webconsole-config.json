@@ -1,0 +1,10 @@
+{
+  "name": "ai-webconsole-service",
+  "description": "Simple htmx based webconsole written in Rust",
+  "port": "1337",
+  "certs_dir": "/home/lzuccarelli/certs",
+  "cert_mode": "file",
+  "log_level": "debug",
+  "db_path": "/home/lzuccarelli/database",
+  "deploy_dir": "/home/lzuccarelli/Projects/ai-workloads/staging"
+}

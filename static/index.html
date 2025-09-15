@@ -262,6 +262,7 @@
                     <select id="category" name="category">
                         <option id="hobby" name="hobby">hobby</option>
                         <option id="finance" name="finance">finance</option>
+                        <option id="other" name="other">other</option>
                         <option id="projects" name="projects">projects</option>
                         <option id="programming" name="programming">programming</option>
                         <option id="sw-architecture" name="sw-architecture">sw-architecture</option>
@@ -391,8 +392,8 @@
         }
 
         function register() {
+            clearAll();
             if (checkSession()) {
-                clearAll();
                 document.getElementById('responseForm').style.display = 'block';
                 document.getElementById('response').innerHTML = "A session is already open (logout first)";
                 return false;
