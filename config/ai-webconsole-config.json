@@ -6,5 +6,6 @@
   "cert_mode": "file",
   "log_level": "debug",
   "db_path": "/home/lzuccarelli/database",
-  "deploy_dir": "/home/lzuccarelli/Projects/ai-workloads/staging"
+  "deploy_dir": "/home/lzuccarelli/ai-workloads/staging",
+  "static_dir": "/home/lzuccarelli/services/static"
 }

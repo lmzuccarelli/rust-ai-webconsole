@@ -18,7 +18,7 @@ tee config/${MS}-config.json <<EOF
   "cert_mode": "file",
   "log_level": "debug",
   "db_path": "/home/${USER}/database",
-  "deploy_dir": "/home/${USER}/ai-workloads/staging"
+  "deploy_dir": "/home/${USER}/ai-workloads/staging",
   "static_dir": "/home/${USER}/services/static"
 }
 EOF
@@ -51,7 +51,7 @@ deploy_service() {
   HOSTS=("george")
   for host in "${HOSTS[@]}"; do
     scp -i "${PK}" config/* "${USER}@${host}:/home/${USER}/services"
-    scp -i "${PK}" static/ "${USER}@${host}:/home/${USER}/services"
+    scp -i "${PK}" -r static/ "${USER}@${host}:/home/${USER}/services"
     ssh -i "${PK}" "${USER}@${host}" -t "cp /home/${USER}/Projects/${REPO_NAME}/target/release/${REPO_NAME} /home/${USER}/services/${MS}-service"
     ssh -i "${PK}" "${USER}@${host}" -t "sudo cp /home/${USER}/services/${MS}.service /etc/systemd/system/"
   done

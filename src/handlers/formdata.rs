@@ -135,7 +135,7 @@ pub fn render_results_html(rows: HashMap<String, FormData>) -> String {
             <td>{}</td>
             <td><i class=\"fa fa-trash-o\" hx-post=\"/webconsole/delete/{}\" hx-trigger=\"click\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
         </tr>",
-            key, fd.file, fd.category, fd.title,  fd.prompt,key,key
+            key, fd.title, fd.category, fd.file, fd.prompt, key, key
         );
         html.push_str(&html_row);
     }
