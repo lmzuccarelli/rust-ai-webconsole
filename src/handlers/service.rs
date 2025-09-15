@@ -2,6 +2,7 @@ use crate::handlers::formdata::{
     Form, FormData, SearchData, deploy_formdata, render_form_html, render_results_html,
 };
 use crate::handlers::login::User;
+use crate::handlers::common::get_map_item;
 use chrono::Local;
 use custom_logger as log;
 use http::{Method, Request, Response, StatusCode};
@@ -10,7 +11,8 @@ use hyper::body::{Bytes, Incoming};
 use std::fs;
 
 async fn get_index() -> Result<String, Box<dyn std::error::Error>> {
-    let html = fs::read_to_string("static/index.html")?;
+    let base_dir = get_map_item("static_dir".to_string())?;
+    let html = fs::read_to_string(format!("{}/index.html",base_dir))?;
     Ok(html)
 }
 

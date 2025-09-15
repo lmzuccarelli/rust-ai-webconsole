@@ -67,6 +67,10 @@ fn main() {
         "deploy_dir".to_string(),
         params.as_ref().unwrap().deploy_dir.to_string(),
     );
+    hm.insert(
+        "static_dir".to_string(),
+        params.as_ref().unwrap().static_dir.to_string(),
+    );
 
     *MAP_LOOKUP.lock().unwrap() = Some(hm.clone());
 

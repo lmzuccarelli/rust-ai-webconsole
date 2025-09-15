@@ -11,6 +11,7 @@ pub struct Parameters {
     pub cert_mode: String,
     pub db_path: String,
     pub deploy_dir: String,
+    pub static_dir: String,
 }
 
 pub trait ConfigInterface {
