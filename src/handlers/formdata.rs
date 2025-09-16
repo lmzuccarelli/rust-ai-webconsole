@@ -185,25 +185,19 @@ pub fn render_form_html(key: String, fd: FormData) -> String {
 }
 
 fn check_selected(category: String) -> String {
-    let mut vec_selected = vec!["", "", "", "", "", ""];
+    let mut vec_selected = vec!["", "", "", ""];
     match category.as_str() {
-        "hobby" => {
+        "generic" => {
             vec_selected[0] = "selected";
         }
-        "finance" => {
+        "stock" => {
             vec_selected[1] = "selected";
         }
-        "other" => {
+        "projects" => {
             vec_selected[2] = "selected";
         }
-        "projects" => {
-            vec_selected[3] = "selected";
-        }
         "programming" => {
-            vec_selected[4] = "selected";
-        }
-        "sw-architecture" => {
-            vec_selected[5] = "selected";
+            vec_selected[3] = "selected";
         }
         _ => {
             vec_selected[0] = "selected";
@@ -212,14 +206,12 @@ fn check_selected(category: String) -> String {
 
     let result = format!(
         r#"
-    <option id="hobby" name="hobby" {}>hobby</option>
-    <option id="finance" name="finance" {}>finance</option>
-    <option id="other" name="other" {}>other</option>
+    <option id="generic" name="generic" {}>generic</option>
+    <option id="stock" name="stock" {}>stock</option>
     <option id="projects" name="projects" {}>projects</option>
     <option id="programming" name="programming" {}>programming</option>
-    <option id="sw-architecture" name="sw-architecture" {}>sw-architecture</option>
     "#,
-        vec_selected[0], vec_selected[1], vec_selected[2], vec_selected[3], vec_selected[4],vec_selected[5]
+        vec_selected[0], vec_selected[1], vec_selected[2], vec_selected[3]
     );
     result
 }

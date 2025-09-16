@@ -260,12 +260,10 @@
                 <div class="form-group">
                     <label for="category">Category</label>
                     <select id="category" name="category">
-                        <option id="hobby" name="hobby">hobby</option>
-                        <option id="finance" name="finance">finance</option>
-                        <option id="other" name="other">other</option>
+                        <option id="generic" name="generic">generic</option>
+                        <option id="stock" name="stcok">stock</option>
                         <option id="projects" name="projects">projects</option>
                         <option id="programming" name="programming">programming</option>
-                        <option id="sw-architecture" name="sw-architecture">sw-architecture</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -393,12 +391,13 @@
         }
 
         function register() {
-            clearAll();
             if (checkSession()) {
+                clearAll();
                 document.getElementById('responseForm').style.display = 'block';
                 document.getElementById('response').innerHTML = "A session is already open (logout first)";
                 return false;
             }
+            clearAll();
             document.getElementById('registerForm').style.display = 'block';
             document.getElementById("session-id").value == "";
         }
@@ -411,12 +410,13 @@
         }
 
         function checkSession() {
+            clearAll();
             let sessionId = document.getElementById('session-id');
             if (sessionId.value === "") {
+                document.getElementById('loginForm').style.display = 'block';
                 return false;
             }
             document.getElementById('searchForm').style.display = 'block';
-            document.getElementById('loginForm').style.display = 'none';
             return true;
         }
 
@@ -438,9 +438,8 @@
 
         
         function showForm(name) {
-            let result = checkSession();
             clearAll();
-            if (result) {
+            if (checkSession()) {
                 document.getElementById(name).style.display = 'block';
             } else {
                 document.getElementById('loginForm').style.display = 'block';
