@@ -67,7 +67,7 @@ impl InputformInterface for Form {
     async fn get_formdata(req_uri: String) -> Result<String, Box<dyn std::error::Error>> {
         let params: Vec<&str> = req_uri.split("/").collect();
         log::debug!("[get_formdata] params {:?}", params);
-        if params.len() != 7 {
+        if params.len() <= 4 {
             return Err(get_error("uri parameters are incorrrect".to_string()));
         }
         let key = params.get(params.len() - 2);
