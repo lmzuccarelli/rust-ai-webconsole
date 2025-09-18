@@ -1,6 +1,6 @@
 [package]
 name = "rust-ai-webconsole"
-version = "0.4.3"
+version = "0.6.0"
 edition = "2024"
 authors = ["Luigi Mario Zuccarelli<>luigizuccarelli@gmail.com"]
 
@@ -23,7 +23,7 @@ url = "2.5.4"
 custom-logger = { git = "https://github.com/lmzuccarelli/rust-custom-logger", branch = "main", version = "0.2.0" }
 hyper-tls = "0.6.0"
 stringreader = "0.1.1"
-surrealkv = "0.9.3"
+surrealkv = "0.10.1"
 chrono = "0.4.42"
 # uncomment this out when cross-compiling
 # openssl = { version = "0.10.29", features = ["vendored"] }

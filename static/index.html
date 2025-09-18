@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Webconsole</title>
+    <title>AI Workflow Webconsole</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"></script>
@@ -253,6 +253,7 @@
             <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc">
                 <input type="hidden" id="key" name="key" value="">
                 <input type="hidden" id="credentials" name="credentials" value="">
+                <input type="hidden" id="db" name="db" value="formdata">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" id="title" name="title" value="" required>
@@ -274,11 +275,11 @@
                     <label for="prompt">Prompt</label>
                     <textarea id="prompt" name="prompt" rows="8" required></textarea>
                 </div>
-                <div style="display: flex; flex-direction: rows;">
-                    <button type="submit">Submit</button>
-                    <span style="margin-right: 10px"></span>
-                    <button id="button-deploy" hx-post="/webconsole/deploy" hx-ext="json-enc" hx-trigger="click" hx-target="#response">Deploy</button>
+                <div class="form-group">
+                    <label for="run-once">Run Once</label>
+                    <input type="checkbox" id="run_once" name="run_once" style="accent-color: #444444;" checked>
                 </div>
+                <button id="submit-formdata" type="submit">Submit</button>
             </form>
         </div>
 
@@ -287,10 +288,10 @@
                 <h2>AI Search</h2>
                 <form id="search" hx-post="/webconsole/search" hx-ext="json-enc" hx-target="#results">
                     <div class="form-group">
-                        <label for="select">Database</label>
-                        <select id="select" name="select">
-                            <option id="kv-store" name="kv-store">kv-store</option>
-                            <!-- <option id="kv" name="kv">vector-db</option> -->
+                        <label for="dbsearch">Database</label>
+                        <select id="dbsearch" name="dbsearch">
+                            <option id="formdata" name="formdata">kv-store-db</option>
+                            <option id="archive" name="archive">kv-archive-db</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -348,6 +349,11 @@
                 switch(event.srcElement.id) {
                 case "icon-formdata":
                     document.getElementById('inputForm').style.display = 'block';
+                    if (document.getElementById('db').value == "archive") {
+                        document.getElementById('submit-formdata').disabled = true;
+                        document.getElementById('submit-formdata').style.backgroundColor = "#555555";
+                        return false;
+                    }
                     break;
                 case "search":
                     document.getElementById('searchForm').style.display = 'flex';
@@ -367,10 +373,6 @@
                     document.getElementById('credentials').value = document.getElementById('username').value;
                     break;
                 case "submit-register": 
-                    document.getElementById('responseForm').style.display = 'block';
-                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
-                    break;
-                case "button-deploy": 
                     document.getElementById('responseForm').style.display = 'block';
                     document.getElementById('response').innerHTML = event.detail.xhr.responseText;
                     break;
@@ -443,6 +445,10 @@
             if (checkSession()) {
                 clearAll();
                 document.getElementById(name).style.display = 'block';
+                if (document.getElementById('db').value == "archive") {
+                    document.getElementById('submit-formdata').disabled = true;
+                    return false;
+                }
             } else {
                 clearAll();
                 document.getElementById('loginForm').style.display = 'block';

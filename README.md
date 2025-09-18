@@ -1,6 +1,6 @@
 # Overview
 
-Simple webconsole (using htmx) written in Rust
+Simple ai-workflowwebconsole (using htmx) written in Rust
 
 ## Usage
 
