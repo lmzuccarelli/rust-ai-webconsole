@@ -425,10 +425,11 @@
             if (checkSession()) {
                 clearAll();
                 document.getElementById('inputForm').style.display = 'block';
-                document.getElementById('formdata').reset();
+                document.getElementById('title').value = "";
+                document.getElementById('file').value = "";
+                document.getElementById('prompt').value = "";
                 document.getElementById("key").value == "";
                 document.getElementById("db").value == "formdata";
-
                 return false;
             }
         }
@@ -478,6 +479,7 @@
             document.getElementById('registerForm').style.display = 'none';
             document.getElementById('errorForm').style.display = 'none';
             document.getElementById('search-table').style.display = 'none';
+            document.getElementById('viewForm').style.display = 'none';
         }
 
         
