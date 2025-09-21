@@ -37,12 +37,12 @@ EOF
 clone_build_service() {
   HOSTS=("george")
   for host in "${HOSTS[@]}"; do
-    ssh -i "${PK}" "${USER}@${host}" -t "mkdir -p /home/${USER}/database && mkdir -p /home/${USER}/services && rm -rf /home/${USER}/services/${MS}-service"
+    ssh -i "${PK}" "${USER}@${host}" -t "rm -rf /home/${USER}/services/${MS}*"
     if [ "${CLEAN}" == "true" ];
     then
-      ssh -i "${PK}" "${USER}@${host}" -t "mkdir -p /home/${USER}/Projects && rm -rf /home/${USER}/Projects/${REPO_NAME} && cd /home/${USER}/Projects && git clone ${REPO} && cd ${REPO_NAME} && make build"
+      ssh -i "${PK}" "${USER}@${host}" -t "rm -rf /home/${USER}/Projects/${REPO_NAME} && cd /home/${USER}/Projects && git clone ${REPO} && cd ${REPO_NAME} && make build"
     else 
-      ssh -i "${PK}" "${USER}@${host}" -t "cd /home/lzuccarelli/Projects/${REPO_NAME} && git pull origin main --rebase && make build"
+      ssh -i "${PK}" "${USER}@${host}" -t "cd /home/lzuccarelli/Projects/${REPO_NAME} && rm -rf target/release/${MS} && git pull origin main --rebase && make build"
     fi
   done
 }

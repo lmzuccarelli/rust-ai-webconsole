@@ -40,6 +40,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "ai-webconsole"
+version = "0.7.3"
+dependencies = [
+ "async-trait",
+ "chrono",
+ "clap",
+ "custom-logger",
+ "http",
+ "http-body-util",
+ "hyper",
+ "hyper-tls",
+ "hyper-util",
+ "rustls",
+ "rustls-pemfile",
+ "rustls-pki-types",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "stringreader",
+ "surrealkv",
+ "tokio",
+ "tokio-rustls",
+ "url",
+]
+
+[[package]]
 name = "android_system_properties"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1507,32 +1533,6 @@ dependencies = [
  "libc",
  "untrusted",
  "windows-sys 0.52.0",
-]
-
-[[package]]
-name = "rust-ai-webconsole"
-version = "0.7.2"
-dependencies = [
- "async-trait",
- "chrono",
- "clap",
- "custom-logger",
- "http",
- "http-body-util",
- "hyper",
- "hyper-tls",
- "hyper-util",
- "rustls",
- "rustls-pemfile",
- "rustls-pki-types",
- "serde",
- "serde_derive",
- "serde_json",
- "stringreader",
- "surrealkv",
- "tokio",
- "tokio-rustls",
- "url",
 ]
 
 [[package]]
