@@ -263,7 +263,7 @@
 
         <div class="form-container" id="inputForm" style="display: none;">
             <h2>AI Form Details</h2>
-            <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc">
+            <form id="formdata" hx-post="/webconsole/formdata" hx-ext="json-enc" hx-target="#response">
                 <input type="hidden" id="key" name="key" value="">
                 <input type="hidden" id="credentials" name="credentials" value="">
                 <input type="hidden" id="db" name="db" value="formdata">
