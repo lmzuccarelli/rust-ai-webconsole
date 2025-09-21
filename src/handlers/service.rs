@@ -1,11 +1,14 @@
 use crate::handlers::common::get_map_item;
 use crate::handlers::formdata::Form;
-use crate::handlers::interface::{InputformInterface, LoginformInterface};
+use crate::handlers::interface::{InputformInterface, LoginformInterface, ViewformInterface};
 use crate::handlers::login::User;
+use crate::handlers::view::View;
 use custom_logger as log;
 use http::{Method, Request, Response, StatusCode};
 use http_body_util::{BodyExt, Full};
+use hyper::HeaderMap;
 use hyper::body::{Bytes, Incoming};
+use hyper::header::CONTENT_TYPE;
 use std::fs;
 
 async fn get_index() -> Result<String, Box<dyn std::error::Error>> {
@@ -37,11 +40,29 @@ pub async fn ai_service(req: Request<Incoming>) -> Result<Response<Full<Bytes>>,
             }
             // GET /formdata/{key}
             if req_uri.contains("formdata") {
-                let fd_res = Form::get_formdata(req_uri).await;
+                let fd_res = Form::get_formdata(req_uri.clone()).await;
                 match fd_res {
                     Ok(html) => {
                         *response.status_mut() = StatusCode::OK;
                         *response.body_mut() = Full::from(html);
+                    }
+                    Err(e) => {
+                        *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                        *response.body_mut() = Full::from(e.to_string());
+                    }
+                }
+            }
+            // GET /document for viewing /view/{key}
+            if req_uri.contains("view") {
+                let res = View::get_formdata(req_uri).await;
+                match res {
+                    Ok(doc) => {
+                        let mut headers = HeaderMap::new();
+                        //headers.insert(ACCEPT, "*".parse().unwrap());
+                        headers.insert(CONTENT_TYPE, "text/markdown".parse().unwrap());
+                        *response.headers_mut() = headers;
+                        *response.status_mut() = StatusCode::OK;
+                        *response.body_mut() = Full::from(doc);
                     }
                     Err(e) => {
                         *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
@@ -102,6 +123,20 @@ pub async fn ai_service(req: Request<Incoming>) -> Result<Response<Full<Bytes>>,
                     Ok(html) => {
                         *response.status_mut() = StatusCode::OK;
                         *response.body_mut() = Full::from(html);
+                    }
+                    Err(e) => {
+                        *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                        *response.body_mut() = Full::from(e.to_string());
+                    }
+                }
+            }
+            // POST /view
+            if req_uri.contains("view") {
+                let result = View::save_formdata(data.clone()).await;
+                match result {
+                    Ok(res) => {
+                        *response.status_mut() = StatusCode::OK;
+                        *response.body_mut() = Full::from(res);
                     }
                     Err(e) => {
                         *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;

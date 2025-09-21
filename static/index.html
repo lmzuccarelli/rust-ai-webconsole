@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/json-enc.js"></script>
+    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -75,6 +76,17 @@
             width: 750px;
             margin-bottom: 20px;
         }
+
+        .form-view {
+            background-color: #222222;
+            padding: 30px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            height: 90%;
+            margin-bottom: 20px;
+            margin-left: 50px;
+        }
+
 
         .table-container {
             background-color: #222222;
@@ -211,6 +223,7 @@
             <span class="span-space" onclick="register();return false;"><i class="fa fa-external-link" ></i></span>
             <span class="span-space" onclick="showForm('searchForm');return false;"><i class="fa fa-search" ></i></span>
             <span class="span-space" onclick="showForm('inputForm');return false;"><i class="fa fa-cogs" ></i></span>
+            <span class="span-space" onclick="showForm('viewForm');return false;"><i class="fa fa-eye" ></i></span>
             <span class="span-space" onclick="logout();return false;"><i class="fa fa-sign-out" ></i></span>
         </div>
 
@@ -291,6 +304,7 @@
                         <label for="dbsearch">Database</label>
                         <select id="dbsearch" name="dbsearch">
                             <option id="formdata" name="formdata">kv-store-db</option>
+                            <option id="queue" name="queue">kv-queue-db</option>
                             <option id="archive" name="archive">kv-archive-db</option>
                         </select>
                     </div>
@@ -321,6 +335,17 @@
                 </table> 
             </div>
         </div>
+
+        <div id="viewForm" class="search-wrapper" style="display: none">
+            <div>
+                <h2>AI View Document</h2>
+                <div class="form-view"><span id="view-results"></span>
+                </div>
+            </div>
+            <div style="margin-top: 80px;"></div>
+            <button type="submit" id="submit-view" hx-get="/webconsole/view/lmz-7239-document" hx-ext="json-enc" hx-target="#view-results" style="width: 200px;">View</button>
+        </div>
+
         
         <div class="response-container" id="responseForm" style="display: none;">
             <h2>Response</h2>
@@ -376,6 +401,10 @@
                     document.getElementById('responseForm').style.display = 'block';
                     document.getElementById('response').innerHTML = event.detail.xhr.responseText;
                     break;
+                case "submit-view": 
+                    document.getElementById('viewForm').style.display = 'flex';
+                    break;
+
                 } 
             } else {
                 showError(event.detail.xhr.responseText);
@@ -445,7 +474,7 @@
             if (checkSession()) {
                 clearAll();
                 document.getElementById(name).style.display = 'block';
-                if (document.getElementById('db').value == "archive") {
+                if (document.getElementById('db').value == "queue") {
                     document.getElementById('submit-formdata').disabled = true;
                     return false;
                 }

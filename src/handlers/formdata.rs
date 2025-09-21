@@ -136,8 +136,9 @@ async fn db_read_search(
 ) -> Result<HashMap<String, FormData>, Box<dyn std::error::Error>> {
     let mut hm: HashMap<String, FormData> = HashMap::new();
     let db = match sd.dbsearch.as_str() {
-        "kv-archive-db" => "archive",
+        "kv-queue-db" => "queue",
         "kv-formdata-db" => "formdata",
+        "kv-archive-db" => "archive",
         _ => "formdata",
     };
     log::debug!("using db {}", db);

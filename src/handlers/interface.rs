@@ -20,3 +20,9 @@ pub trait LoginformInterface {
     async fn get_formdata(data: Bytes) -> Result<String, Box<dyn std::error::Error>>;
 }
 
+#[allow(dead_code)]
+#[async_trait]
+pub trait ViewformInterface {
+    async fn get_formdata(req_uri: String) -> Result<String, Box<dyn std::error::Error>>;
+    async fn save_formdata(data: Bytes) -> Result<String, Box<dyn std::error::Error>>;
+}
