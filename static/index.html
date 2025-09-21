@@ -222,7 +222,7 @@
             <span class="span-space" onclick="login();return false;"><i class="fa fa-sign-in" ></i></span>
             <span class="span-space" onclick="register();return false;"><i class="fa fa-external-link" ></i></span>
             <span class="span-space" onclick="showForm('searchForm');return false;"><i class="fa fa-search" ></i></span>
-            <span class="span-space" onclick="showForm('inputForm');return false;"><i class="fa fa-cogs" ></i></span>
+            <span class="span-space" onclick="form();return false;"><i class="fa fa-cogs" ></i></span>
             <span class="span-space" onclick="showForm('viewForm');return false;"><i class="fa fa-eye" ></i></span>
             <span class="span-space" onclick="logout();return false;"><i class="fa fa-sign-out" ></i></span>
         </div>
@@ -420,6 +420,19 @@
                 return false;
             }
         }
+
+        function form() {
+            if (checkSession()) {
+                clearAll();
+                document.getElementById('inputForm').style.display = 'block';
+                document.getElementById('formdata').reset();
+                document.getElementById("key").value == "";
+                document.getElementById("db").value == "formdata";
+
+                return false;
+            }
+        }
+
 
         function register() {
             if (checkSession()) {
