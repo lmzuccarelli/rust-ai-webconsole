@@ -159,7 +159,8 @@ async fn db_read_search(
         let s_value = str::from_utf8(&value);
         log::info!("{} {}", s_key.unwrap(), s_value.unwrap());
         let v = String::from_utf8(value)?;
-        let fd = serde_json::from_str(&v)?;
+        let mut fd: FormData = serde_json::from_str(&v)?;
+        fd.db = db.to_string();
         hm.insert(s_key.unwrap().to_owned(), fd);
     }
     // commit transaction

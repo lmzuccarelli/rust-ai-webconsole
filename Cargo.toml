@@ -1,6 +1,6 @@
 [package]
 name = "ai-webconsole"
-version = "0.7.4"
+version = "0.7.5"
 edition = "2024"
 authors = ["Luigi Mario Zuccarelli<>luigizuccarelli@gmail.com"]
 
