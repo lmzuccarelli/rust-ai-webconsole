@@ -380,6 +380,11 @@
                         return false;
                     }
                     break;
+                case "icon-delete":
+                    document.getElementById('responseForm').style.display = 'block';
+                    document.getElementById('response').innerHTML = event.detail.xhr.responseText;
+                    break;
+
                 case "search":
                     document.getElementById('searchForm').style.display = 'flex';
                     document.getElementById('search-table').style.display = 'block';

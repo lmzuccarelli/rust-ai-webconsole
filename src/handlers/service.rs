@@ -148,6 +148,7 @@ pub async fn ai_service(req: Request<Incoming>) -> Result<Response<Full<Bytes>>,
         &Method::DELETE => {
             // DELETE /formdata/{key}
             if req_uri.contains("formdata") {
+                log::debug!("deleting formdata");
                 let fd_res = Form::delete_formdata(req_uri.clone()).await;
                 match fd_res {
                     Ok(html) => {
