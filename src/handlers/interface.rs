@@ -12,6 +12,7 @@ pub trait InputformInterface {
     async fn save_formdata(data: Bytes) -> Result<String, Box<dyn std::error::Error>>;
     async fn search_formdata(data: Bytes) -> Result<String, Box<dyn std::error::Error>>;
     async fn get_formdata(req_uri: String) -> Result<String, Box<dyn std::error::Error>>;
+    async fn delete_formdata(req_uri: String) -> Result<String, Box<dyn std::error::Error>>;
 }
 
 #[async_trait]

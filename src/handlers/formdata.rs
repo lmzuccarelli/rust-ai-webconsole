@@ -79,6 +79,21 @@ impl InputformInterface for Form {
         let html = render_form_html(fd.clone().key.unwrap_or("".to_string()), fd);
         Ok(html)
     }
+
+    async fn delete_formdata(req_uri: String) -> Result<String, Box<dyn std::error::Error>> {
+        let params: Vec<&str> = req_uri.split("/").collect();
+        log::debug!("[delete_formdata] params {:?}", params);
+        if params.len() <= 4 {
+            return Err(get_error("uri parameters are incorrrect".to_string()));
+        }
+        let key = params.get(params.len() - 2);
+        log::debug!(
+            "[delete_formdata] key {}",
+            params.get(params.len() - 2).unwrap().to_string(),
+        );
+        db_delete(key.unwrap().to_string(), params.last().unwrap().to_string()).await?;
+        Ok(format!("form {} deleted successfully", key.unwrap()))
+    }
 }
 
 async fn db_upsert(id: String, fd: FormData) -> Result<String, Box<dyn std::error::Error>> {
@@ -131,6 +146,19 @@ async fn db_read(id: String, db: String) -> Result<FormData, Box<dyn std::error:
     }
 }
 
+async fn db_delete(id: String, db: String) -> Result<(), Box<dyn std::error::Error>> {
+    let tree = get_opts(db)?;
+    // start transaction
+    let mut txn = tree.begin().map_err(|e| get_error(e.to_string()))?;
+    let key = Bytes::from(id.clone());
+    log::debug!("[db_read] key {}", id);
+    txn.delete(&key).map_err(|e| get_error(e.to_string()))?;
+    // commit transaction
+    txn.commit().await?;
+    tree.close().await?;
+    Ok(())
+}
+
 async fn db_read_search(
     sd: SearchData,
 ) -> Result<HashMap<String, FormData>, Box<dyn std::error::Error>> {
@@ -180,9 +208,9 @@ fn render_results_html(rows: HashMap<String, FormData>) -> String {
             <td>{}</td>
             <td>{}</td>
             <td>{}</td>
-            <td><i class=\"fa fa-trash-o\" hx-post=\"/webconsole/delete/{}\" hx-trigger=\"click\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
+            <td><i id=\"icon-delete\" class=\"fa fa-trash-o\" hx-delete=\"/webconsole/formdata/{}/{}\" hx-trigger=\"click\" hx-target=\"#responseForm\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
         </tr>",
-            key, fd.title, fd.category, fd.file, fd.prompt, key, key,fd.db
+            key, fd.title, fd.category, fd.file, fd.prompt, key, fd.db, key,fd.db
         );
         html.push_str(&html_row);
     }

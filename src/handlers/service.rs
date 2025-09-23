@@ -145,6 +145,23 @@ pub async fn ai_service(req: Request<Incoming>) -> Result<Response<Full<Bytes>>,
                 }
             }
         }
+        &Method::DELETE => {
+            // DELETE /formdata/{key}
+            if req_uri.contains("formdata") {
+                let fd_res = Form::delete_formdata(req_uri.clone()).await;
+                match fd_res {
+                    Ok(html) => {
+                        *response.status_mut() = StatusCode::OK;
+                        *response.body_mut() = Full::from(html);
+                    }
+                    Err(e) => {
+                        *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                        *response.body_mut() = Full::from(e.to_string());
+                    }
+                }
+            }
+        }
+
         _ => {
             *response.status_mut() = StatusCode::NOT_FOUND;
         }
