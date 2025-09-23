@@ -208,7 +208,7 @@ fn render_results_html(rows: HashMap<String, FormData>) -> String {
             <td>{}</td>
             <td>{}</td>
             <td>{}</td>
-            <td><i id=\"icon-delete\" class=\"fa fa-trash-o\" hx-delete=\"/webconsole/formdata/{}/{}\" hx-trigger=\"click\" hx-target=\"#responseForm\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
+            <td><i id=\"icon-delete\" class=\"fa fa-trash-o\" hx-delete=\"/webconsole/formdata/{}/{}\" hx-trigger=\"click\" hx-target=\"#response\"></i>&nbsp&nbsp;&nbsp;<i id=\"icon-formdata\" class=\"fa fa-edit\" hx-get=\"/webconsole/formdata/{}/{}\" hx-target=\"#inputForm\" hx-trigger=\"click\"></i></td>
         </tr>",
             key, fd.title, fd.category, fd.file, fd.prompt, key, fd.db, key,fd.db
         );
