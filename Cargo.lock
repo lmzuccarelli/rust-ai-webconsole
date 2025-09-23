@@ -41,7 +41,7 @@ dependencies = [
 
 [[package]]
 name = "ai-webconsole"
-version = "0.7.3"
+version = "0.7.4"
 dependencies = [
  "async-trait",
  "chrono",
